@@ -3,7 +3,6 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (callback) {
-      console.log('i am in models get');
       db.query('SELECT text, roomname, username FROM messages INNER JOIN users ON messages.userid=users.id', function(err, results) {
         var myObj = {};
         myObj.results = results;
@@ -29,7 +28,6 @@ module.exports = {
       });
     },
     post: function (username) {
-      console.log(username.username, ' is the user name in user post');
       db.query('INSERT INTO users (username) VALUES ("' + username.username + '");');
     }
   }
