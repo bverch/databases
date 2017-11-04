@@ -13,4 +13,4 @@ dbConnection = mysql.createConnection({
 });
 dbConnection.connect();
 
-module.exports.db = dbConnection;
+module.exports = dbConnection;
