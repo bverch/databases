@@ -3,14 +3,19 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (callback) {
-      db.query('SELECT * FROM messages', function(err, results) {
+      console.log('i am in models get');
+      db.query('SELECT text, roomname, username FROM messages INNER JOIN users ON messages.userid=users.id', function(err, results) {
         var myObj = {};
         myObj.results = results;
         callback(myObj);
       });
     }, // a function which produces all the messages
     post: function (message) {
-      db.query('INSERT INTO messages (text, roomname, username) VALUES ("' + message.text + '","' + message.roomname + '","' + message.username + '");');
+      db.query('INSERT INTO users (username) VALUES ("' + message.username + '");', function() {
+        db.query('INSERT INTO messages (text, roomname, userid) VALUES ("' + message.text + '","' + message.roomname + '",'
+         + '(SELECT id FROM users WHERE username="' + message.username + '"));');
+
+      });
     } // a function which can be used to insert a message into the database
   },
 
@@ -23,7 +28,10 @@ module.exports = {
         callback(myObj);
       });
     },
-    post: function () {}
+    post: function (username) {
+      console.log(username.username, ' is the user name in user post');
+      db.query('INSERT INTO users (username) VALUES ("' + username.username + '");');
+    }
   }
 };
 

@@ -5,28 +5,26 @@ module.exports = {
     // a function which handles a get request for all messages
     get: function (req, res) {
       console.log('We are receiving a method :', req.method, ' from url :', req.url);
-      var dummyData = { 'results': [{'username': 'fred', 'roomname': 'floor7', 'text': 'yo'}] };
-      models.messages.get(function(data) {
-        res.send(data);
-      });
+      console.log('req.url in get is: ', req.url);
+      if (req.url.split('?')[0] === '/messages') {
+        models.messages.get(function(data) {
+          res.send(data);
+        });
+      } else if (req.url.split('?')[0] === '/users') {
+        models.users.get(function(data) {
+          res.send(data);
+        });
+      }
     },
     // a function which handles posting a message to the database
     post: function (req, res) {
       console.log('We are receiving a method :', req.method, ' from url :', req.url);
-      console.log('req', req.body);
-      models.messages.post(req.body);
-      //console.log('our req', req);
-      
-      // var data = '';
-      // req.on('data', function(chunk) {
-
-      //   data += chunk;
-      // });
-      // req.on('end', function() {
-      //   console.log('received our data! :', data);
-      //   res.send('received data');
-      // });
-      
+      console.log('req.url is ', req.url);
+      if (req.url === '/messages') {
+        models.messages.post(req.body);
+      } else if (req.url === '/users') {
+        models.users.post(req.body);
+      }
       res.send('Hello server received your request');
     } 
   },
