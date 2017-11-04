@@ -1,0 +1,2 @@
+USE chatterbox;
+SELECT * FROM chats;
